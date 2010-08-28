@@ -955,7 +955,8 @@ $("#startArrow").remove();
 					2000
 				);
 
-        $.post('/blocks.json', {row: row, col:col, color:selectedColour});
+        // $.post('/blocks.json', {row: row, col:col, color:selectedColour});
+        socket.send(JSON.stringify({row: row, col: col, color: selectedColour}));
 
 				return false;
 			}
@@ -1163,8 +1164,19 @@ $(init);
         });
   };
 
+var startSocket = function() {
+  var host = document.location.host.replace(/:\d+/, '');
+  socket = new io.Socket(host);
+
+  socket.connect();
+  socket.on('message', function(data){
+    console.log("GOT: " + JSON.stringify(data));
+    newBlockUpdate(data);
+  });
+};
 
 $(function() {
+
   $.getJSON('/blocks.json', function(data) {
 
 		var canvas = $("#canvas");
@@ -1197,6 +1209,6 @@ $(function() {
 		shadows.html(shadowsHTML);
   });
 
-//  waitForMsg();
+  startSocket();
 
 });

@@ -7,13 +7,14 @@ var http = require('http');
 var nodestatic = require('node-static/lib/node-static');
 var journey = require('journey/lib/journey');
 var routes = require('routes');
+var io = require('socket.io-node');
 
 // Static file server
 var file = new(nodestatic.Server)('./public');
 
 var router = new(journey.Router)(routes.map);
 
-http.createServer(function(request, response) {
+var server = http.createServer(function(request, response) {
   var body = "";
 
   if(request.url == '/') { request.url = '/index.html'; }
@@ -27,7 +28,7 @@ http.createServer(function(request, response) {
       if(result.status === 404) {
         file.serve(request, response, function(err, result) {
           if (err) {
-            file.serveFile('/404.html', 200, {}, request, response);
+            file.serveFile('/404.html', 404, {}, request, response);
           }
         });
       } else {
@@ -36,6 +37,15 @@ http.createServer(function(request, response) {
       }
     });
   });
-}).listen(3008, "127.0.0.1");
-
+});
+server.listen(3008, "127.0.0.1");
 console.log("Listening on port 3008");
+
+// socket.io, I choose you
+var socket = io.listen(server);
+routes.nodescape.setSocket(socket);
+
+socket.on('connection', function(client){
+  client.on('message', function(data) { routes.nodescape.socketPost(data, client) });
+  // client.on('disconnect', function(){ console.log("GONE"); })
+});

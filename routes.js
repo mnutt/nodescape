@@ -1,4 +1,4 @@
-var nodescape = require('nodescape');
+var nodescape = this.nodescape = require('nodescape');
 
 this.map = function() {
   this.path(/^\/blocks\.json/, function (req) {
