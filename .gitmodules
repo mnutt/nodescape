@@ -1,0 +1,18 @@
+[submodule "journey"]
+  path = deps/journey
+  url = http://github.com/cloudhead/journey.git
+[submodule "mongoose"]
+  path = deps/mongoose
+  url = http://github.com/LearnBoost/mongoose.git
+[submodule "node-static"]
+  path = deps/node-static
+  url = http://github.com/cloudhead/node-static.git
+[submodule "socket.io-node"]
+  path = deps/socket.io-node
+  url = git://github.com/LearnBoost/Socket.IO-node.git
+[submodule "socket.io"]
+  path = public/Socket.IO
+  url = git://github.com/LearnBoost/Socket.IO.git
+[submodule "web-socket-js"]
+  path = public/Socket.IO/lib/vendor/web-socket-js
+  url = git://github.com/gimite/web-socket-js.git
